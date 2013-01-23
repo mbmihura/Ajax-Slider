@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"></head><body>
+  <script src="./jquery.min.js"></script>
+
+  <style>
+    .slider {
+      width: 400px; height: 300px;
+      overflow: hidden;
+      position: relative; /* for overflow: hidden to work in IE7 */
+    }
+      .slider > ul {
+        /* styled by JS to match the added width and height of all <li>â€™s */
+        position: relative;
+        -webkit-transition: .5s left;
+        -moz-transition: .5s left;
+        -ms-transition: .5s left;
+        -o-transition: .5s left;
+
+        list-style: none;
+        margin: 0; padding: 0;
+      }
+        .slider > ul > li {
+          float: left;
+          width: 400px; height: 300px;
+        }
+  </style>
+
+  <script>
+    var Slider = function() { this.initialize.apply(this, arguments) }
+    Slider.prototype = {
+
+      initialize: function(slider) {
+        this.ul = slider.children[0]
+        this.li = this.ul.children
+
+        var sum = 0;
+		for (i=0;i < this.li.length;++i)
+		{
+			sum += this.li[i].clientWidth;
+		}
+        this.ul.style.width = sum + 'px'
+
+        this.currentIndex = 0
+      },
+
+      goTo: function(index) {
+        if (index < 0 || index > this.li.length - 1)
+          return
+
+        this.ul.style.left = '-' + (100 * index) + '%'
+
+        this.currentIndex = index
+      },
+
+      goToPrev: function() {
+        this.goTo(this.currentIndex - 1)
+		
+      },
+
+      goToNext: function() {
+        this.goTo(this.currentIndex + 1)
+		$("#c").append('<li><a href="">Ajax Message from server n° ' + this.currentIndex + '</a></li>');
+		var sum = 0;
+		for (i=0;i < this.li.length;i++)
+		{
+			sum += this.li[i].clientWidth;
+		}
+        this.ul.style.width = sum + 'px'
+      }
+    }
+  </script>
+
+  <div class="slider">
+    <ul id="c" style="width: 1600px;">
+      <li><img src="./img/1.png"></li>
+      <li><img src="./img/2.png"></li>
+      <li><img src="./img/3.png"></li>
+      <li><img src="./img/4.png"></li>
+    </ul>
+  </div>
+
+  <script>
+    var sliders = []
+    $('.slider').each(function() {
+      sliders.push(new Slider(this))
+    })
+  </script>
+
+  <div>
+    <ul>
+      <li><a href="javascript:sliders[0].goToPrev()">.goToPrev()</a></li>
+      <li><a href="javascript:sliders[0].goToNext()">.goToNext()</a></li>
+    </ul>
+    <ul>
+      <li><a href="javascript:sliders[0].goTo(-1)">.goTo(-1)</a></li>
+      <li><a href="javascript:sliders[0].goTo(0)">.goTo(0)</a></li>
+      <li><a href="javascript:sliders[0].goTo(1)">.goTo(1)</a></li>
+      <li><a href="javascript:sliders[0].goTo(42)">.goTo(42)</a></li>
+    </ul>
+  </div>
+
+
+</body></html>
